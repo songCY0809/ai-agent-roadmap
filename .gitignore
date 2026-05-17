@@ -1,0 +1,22 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+**/.venv/
+**/__pycache__/
+*.py[oc]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Large local reference clones (re-clone or use submodules if needed)
+reference/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

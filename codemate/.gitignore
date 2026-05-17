@@ -1,0 +1,59 @@
+# --- 敏感信息 ---
+.env
+*.key
+credentials.json
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+
+# --- 虚拟环境 ---
+.venv/
+venv/
+env/
+.python-version
+
+# --- uv ---
+# 注意：uv.lock 应该提交到 git
+# 仅忽略本地构建产物
+dist/
+build/
+*.egg-info/
+
+# --- 数据（运行时产生） ---
+data/chroma/
+data/milvus/
+data/codemate.db
+data/codemate.db-journal
+data/notes/
+data/uploads/
+
+# --- 日志 ---
+logs/
+*.log
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# --- LangGraph / Langfuse 本地数据 ---
+.langgraph/
+.langfuse/
+
+# --- Streamlit ---
+.streamlit/secrets.toml
+
+# --- Notebook ---
+.ipynb_checkpoints/

@@ -1,0 +1,104 @@
+[project]
+name = "codemate"
+version = "0.0.1"
+description = "AI study buddy for programmers: RAG QA + algorithm coach + code review + study plan"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "Apache-2.0" }
+authors = [{ name = "songCY0809" }]
+
+dependencies = [
+    # --- LLM 客户端（W1 起） ---
+    "httpx>=0.27,<1.0",
+    "openai>=1.50,<2.0",                 # DeepSeek API 兼容 OpenAI SDK
+
+    # --- 配置 & 校验（W1 起） ---
+    "pydantic>=2.7,<3.0",
+    "pydantic-settings>=2.4,<3.0",
+
+    # --- CLI（W6 起，但 W1 hello_llm 就用） ---
+    "typer>=0.12,<1.0",
+    "rich>=13.0,<14.0",                  # 漂亮终端输出
+
+    # --- LangGraph & LangChain 组件层（W3 起） ---
+    "langgraph>=0.2,<1.0",
+    "langchain-core>=0.3,<1.0",
+    "langchain-text-splitters>=0.3,<1.0",
+
+    # --- 文档加载（W4 起） ---
+    "python-docx>=1.1,<2.0",
+    "markdown-it-py>=3.0,<4.0",          # markdown AST 解析（保留标题层级）
+    "python-frontmatter>=1.1,<2.0",      # 解析 ai-agent-roadmap/notes/*.md 的 YAML frontmatter
+
+    # --- Embedding & 检索（W4 起） ---
+    "sentence-transformers>=3.0,<4.0",   # 跑 bge-m3
+    "chromadb>=0.5,<1.0",                # W4 入门向量库
+    "rank-bm25>=0.2,<1.0",               # BM25 稀疏通道（W5）
+
+    # --- 持久化（W6 起） ---
+    "sqlalchemy>=2.0,<3.0",
+    "aiosqlite>=0.20,<1.0",
+
+    # --- API 服务（W6 起） ---
+    "fastapi>=0.115,<1.0",
+    "uvicorn[standard]>=0.30,<1.0",
+    "sse-starlette>=2.1,<3.0",
+
+    # --- 日志 & 观测（W7 起会加 Langfuse） ---
+    "structlog>=24.4,<26.0",
+]
+
+[project.optional-dependencies]
+# W5 末起：MCP server 与 Milvus
+mcp = [
+    "mcp>=1.0,<2.0",                     # MCP Python SDK
+    "pymilvus>=2.4,<3.0",
+]
+
+# W7 起：评估与观测
+eval = [
+    "ragas>=0.2,<1.0",
+    "langfuse>=2.0,<3.0",
+    "datasets>=3.0,<4.0",
+]
+
+# W9 起：UI
+ui = ["streamlit>=1.36,<2.0"]
+
+# 开发依赖
+dev = [
+    "pytest>=8.0,<9.0",
+    "pytest-asyncio>=0.24,<1.0",
+    "pytest-cov>=5.0,<7.0",
+    "ruff>=0.6,<1.0",
+    "mypy>=1.11,<2.0",
+]
+
+[project.scripts]
+codemate = "codemate.cli.main:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/codemate"]
+
+# --- 工具配置 ---
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "ASYNC"]
+ignore = ["E501"]                        # 行长由 formatter 管
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false                           # 项目早期不强求
+ignore_missing_imports = true
